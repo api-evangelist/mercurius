@@ -1,0 +1,199 @@
+# Mercurius GraphQL Schema
+#
+# Mercurius is a high-performance GraphQL adapter for Fastify.
+# Source: https://github.com/mercurius-js/mercurius
+# Docs:   https://mercurius.dev
+#
+# This schema is a composite example derived from the official Mercurius
+# repository examples and documentation. Each Mercurius deployment defines
+# its own schema; this file illustrates the full range of supported SDL
+# constructs: queries, mutations, subscriptions, loaders, and federation.
+#
+# References:
+#   examples/basic.js        — simple Query
+#   examples/loaders.js      — Human/Dog loader pattern
+#   docs/subscriptions.md    — Notification, Vote subscription examples
+#   examples/gateway.js      — federation User/Post services
+
+# ---------------------------------------------------------------------------
+# Scalar types used across examples
+# ---------------------------------------------------------------------------
+
+scalar ID
+
+# ---------------------------------------------------------------------------
+# Core domain types
+# ---------------------------------------------------------------------------
+
+"""
+A human owner associated with one or more dogs.
+"""
+type Human {
+  name: String!
+}
+
+"""
+A dog with an optional owning human resolved via Mercurius dataloader.
+"""
+type Dog {
+  name: String!
+  owner: Human
+}
+
+# ---------------------------------------------------------------------------
+# Notification types — used in the pub/sub subscription examples
+# ---------------------------------------------------------------------------
+
+"""
+A push notification that can be subscribed to in real time.
+"""
+type Notification {
+  id: ID!
+  message: String
+}
+
+# ---------------------------------------------------------------------------
+# Voting types — used in the Redis-backed subscription example
+# ---------------------------------------------------------------------------
+
+"""
+A vote item that accumulates aye and noe counts.
+"""
+type Vote {
+  id: ID!
+  title: String!
+  ayes: Int
+  noes: Int
+}
+
+# ---------------------------------------------------------------------------
+# Federation types — User and Post services composed via @mercuriusjs/gateway
+# ---------------------------------------------------------------------------
+
+enum AvatarSize {
+  small
+  medium
+  large
+}
+
+"""
+A user entity resolved across the federation gateway.
+"""
+type User {
+  id: ID!
+  name: String!
+  fullName: String
+  avatar(size: AvatarSize): String
+  friends: [User]
+  posts: [Post]
+  numberOfPosts: Int
+}
+
+"""
+A blog post entity owned by a User in the posts federation service.
+"""
+type Post {
+  pid: ID!
+  title: String
+  content: String
+  author: User
+}
+
+# ---------------------------------------------------------------------------
+# Input types
+# ---------------------------------------------------------------------------
+
+input PostInput {
+  title: String!
+  content: String!
+  authorId: String!
+}
+
+# ---------------------------------------------------------------------------
+# Root operation types
+# ---------------------------------------------------------------------------
+
+type Query {
+  """
+  Returns the sum of two integers. Demonstrates basic resolver wiring.
+  """
+  add(x: Int, y: Int): Int
+
+  """
+  Returns all dogs. Owners are resolved via Mercurius dataloader (N+1 safe).
+  """
+  dogs: [Dog]
+
+  """
+  Returns all notifications.
+  """
+  notifications: [Notification]
+
+  """
+  Returns all votes.
+  """
+  votes: [Vote]
+
+  """
+  Federation gateway: return the authenticated user.
+  """
+  me: User
+
+  """
+  Federation gateway: return another user.
+  """
+  you: User
+
+  """
+  Federation gateway: return top posts (count defaults to 2).
+  """
+  topPosts(count: Int): [Post]
+
+  """
+  Simple greeting query.
+  """
+  hello(name: String): String!
+}
+
+type Mutation {
+  """
+  Publishes a new notification and returns it.
+  Triggers the notificationAdded subscription.
+  """
+  addNotification(message: String): Notification
+
+  """
+  Records an aye vote on a given vote item.
+  Triggers the voteAdded subscription.
+  """
+  voteAye(voteId: ID!): Vote
+
+  """
+  Records a noe vote on a given vote item.
+  Triggers the voteAdded subscription.
+  """
+  voteNo(voteId: ID!): Vote
+
+  """
+  Federation posts service: create a new post.
+  """
+  createPost(post: PostInput!): Post
+
+  """
+  Federation posts service: placeholder mutation to update a global value.
+  """
+  updateHello: String
+}
+
+type Subscription {
+  """
+  Fires whenever addNotification is called.
+  Supports an optional contains filter to limit events by message content.
+  """
+  notificationAdded(contains: String): Notification
+
+  """
+  Fires whenever voteAye or voteNo is called for the given vote ID.
+  """
+  voteAdded(voteId: ID!): Vote
+}
