@@ -1,0 +1,57 @@
+aid: mercurius
+name: Mercurius
+description: "High-performance GraphQL server for Fastify with Just-In-Time compilation
+  via graphql-jit, automatic query caching, N+1 prevention via dataloader integration,
+  federation support, subscription via WebSocket, batched query support, and GraphQL
+  Playground integration."
+type: Index
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://mercurius.dev/
+baseURL: https://mercurius.dev/
+created: 2026-06-14
+modified: 2026-06-14
+specificationVersion: '0.19'
+tags:
+  - GraphQL
+  - Fastify
+  - Node.js
+  - Federation
+  - WebSocket
+  - Open Source
+apis:
+  - aid: mercurius:api
+    name: Mercurius API
+    description: "GraphQL adapter for Fastify enabling high-performance GraphQL servers
+      and gateways with JIT compilation, query caching, subscriptions, and federation."
+    tags:
+      - GraphQL
+      - Fastify
+      - Federation
+      - Subscriptions
+    humanURL: https://mercurius.dev/
+    baseURL: https://mercurius.dev/
+    properties:
+      - url: https://mercurius.dev/
+        type: Documentation
+      - url: graphql/mercurius-graphql.md
+        type: GraphQL
+common:
+  - url: https://mercurius.dev/
+    type: Website
+  - url: https://mercurius.dev/
+    type: Documentation
+  - url: https://www.linkedin.com/company/mercuriusinc
+    type: LinkedIn
+  - url: https://github.com/mercurius-js
+    type: GitHubOrganization
+  - url: https://github.com/mercurius-js/mercurius/blob/master/LICENSE
+    type: Licensing
+  - url: plans/mercurius-plans.md
+    type: Plans
+  - url: rate-limits/mercurius-rate-limits.md
+    type: RateLimits
+  - url: finops/mercurius-finops.md
+    type: FinOps
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
