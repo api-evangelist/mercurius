@@ -36,6 +36,8 @@ apis:
       - url: graphql/mercurius-graphql.md
         type: GraphQL
 common:
+  - type: DomainSecurity
+    url: security/mercurius-domain-security.yml
   - url: https://mercurius.dev/
     type: Website
   - url: https://mercurius.dev/
