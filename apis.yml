@@ -28,6 +28,13 @@ tags:
   - Node.js
   - Federation
   - WebSocket
+  - Open-Source
+tags_raw:
+  - GraphQL
+  - Fastify
+  - Node.js
+  - Federation
+  - WebSocket
   - Open Source
 apis:
   - aid: mercurius:api
@@ -35,6 +42,11 @@ apis:
     description: "GraphQL adapter for Fastify enabling high-performance GraphQL servers
       and gateways with JIT compilation, query caching, subscriptions, and federation."
     tags:
+      - GraphQL
+      - Fastify
+      - Federation
+      - Subscription
+    tags_raw:
       - GraphQL
       - Fastify
       - Federation
